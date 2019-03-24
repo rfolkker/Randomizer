@@ -1,0 +1,48 @@
+<!-- index.html-->
+
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="jumbotron">
+  <h1>Players</h1>
+  <p class="teamInput">
+      <input type="text" id="users" />
+      <input type="button" value="Build" onclick="onBuildClick('#users')" />
+  </p>
+  <hr />
+  <h2>Team #1</h2>
+  <p class="teamOne" id="teamOne">
+  </p>
+  <hr />
+  <h2>Team #2</h2>
+  <p class="teamTwo" id="teamTwo">
+  </p>
+</div>
+<script type=text/javascript src="{{
+    url_for('static', filename='jquery.min.js') }}"></script>
+  <script type=text/javascript>
+  function onBuildClick(users){
+    var userList = $(users)[0].value,
+      text,
+      teamOne = $('#teamOne')[0],
+      teamTwo = $('#teamTwo')[0];
+    $.get("/list?users="+userList,function(data) {
+      text="<table>\n"
+      for (i = 0; i < data[0].length; i++) { 
+        text += "<tr><td>" + data[0][i] + "</td></tr>\n";
+        // text += "<tr><td>" + data[0][i] + "</td><td>"+ data[1][i] + "</td></tr>\n";
+      }
+      text+= "</table>\n";
+      teamOne.innerHTML = text;
+      text="<table>\n"
+      for (i = 0; i < data[1].length; i++) { 
+        text += "<tr><td>" + data[1][i] + "</td></tr>\n";
+        // text += "<tr><td>" + data[0][i] + "</td><td>"+ data[1][i] + "</td></tr>\n";
+      }
+      text+= "</table>\n";
+      teamTwo.innerHTML = text;
+    });
+  }
+    
+  </script>
+  {% endblock %}
